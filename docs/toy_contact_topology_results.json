@@ -1,0 +1,128 @@
+{
+  "target_topology": "upper_arc",
+  "records": [
+    {
+      "bits": [
+        -1.0,
+        -1.0,
+        -1.0
+      ],
+      "topology": "lower_arc",
+      "length": 4.8284,
+      "topology_penalty": 1
+    },
+    {
+      "bits": [
+        -1.0,
+        -1.0,
+        1.0
+      ],
+      "topology": "switching_arc",
+      "length": 6.0645,
+      "topology_penalty": 1
+    },
+    {
+      "bits": [
+        -1.0,
+        1.0,
+        -1.0
+      ],
+      "topology": "switching_arc",
+      "length": 7.3006,
+      "topology_penalty": 1
+    },
+    {
+      "bits": [
+        -1.0,
+        1.0,
+        1.0
+      ],
+      "topology": "switching_arc",
+      "length": 6.0645,
+      "topology_penalty": 1
+    },
+    {
+      "bits": [
+        1.0,
+        -1.0,
+        -1.0
+      ],
+      "topology": "switching_arc",
+      "length": 6.0645,
+      "topology_penalty": 1
+    },
+    {
+      "bits": [
+        1.0,
+        -1.0,
+        1.0
+      ],
+      "topology": "switching_arc",
+      "length": 7.3006,
+      "topology_penalty": 1
+    },
+    {
+      "bits": [
+        1.0,
+        1.0,
+        -1.0
+      ],
+      "topology": "switching_arc",
+      "length": 6.0645,
+      "topology_penalty": 1
+    },
+    {
+      "bits": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "topology": "upper_arc",
+      "length": 4.8284,
+      "topology_penalty": 0
+    }
+  ],
+  "best_smooth": {
+    "bits": [
+      1.0,
+      1.0,
+      1.0
+    ],
+    "topology": "upper_arc",
+    "length": 4.8284,
+    "topology_penalty": 0
+  },
+  "best_topology": {
+    "bits": [
+      1.0,
+      1.0,
+      1.0
+    ],
+    "topology": "upper_arc",
+    "length": 4.8284,
+    "topology_penalty": 0
+  },
+  "takeaway": "Equal-smoothness paths can realize different contact topologies, so action smoothness alone cannot identify the desired contact class.",
+  "equally_smooth_pair": {
+    "upper": {
+      "bits": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "topology": "upper_arc",
+      "length": 4.8284,
+      "topology_penalty": 0
+    },
+    "lower": {
+      "bits": [
+        -1.0,
+        -1.0,
+        -1.0
+      ],
+      "topology": "lower_arc",
+      "length": 4.8284,
+      "topology_penalty": 1
+    }
+  }
+}

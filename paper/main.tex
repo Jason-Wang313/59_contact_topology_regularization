@@ -1,0 +1,122 @@
+\documentclass{article}
+
+\usepackage{iclr2026_conference,times}
+\input{math_commands.tex}
+\usepackage{hyperref}
+\usepackage{url}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{array}
+
+\title{Contact Topology Regularization for Contact-Rich Policy Learning}
+
+\author{Anonymous Authors}
+
+\newcommand{\ctop}{\mathcal{T}}
+\newcommand{\adj}{\mathcal{A}}
+\newcommand{\pol}{\pi_\theta}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+Contact-rich manipulation is usually stabilized with smoother actions, stronger force limits, better tactile encoders, or safer control laws. We argue that these mechanisms can still leave the central failure mode untouched: a policy may be smooth in continuous action space while silently changing the discrete topology of its contact sequence. We introduce contact topology regularization, a policy objective that preserves the structure of the contact graph induced by a rollout rather than only penalizing action variation. The method is intentionally narrow. It does not claim a universal solver for contact-rich manipulation, and it does not replace control-theoretic safety. Instead, it targets a hidden assumption that appears throughout the literature: if a policy is locally smooth, then its contact behavior is semantically stable. We formalize a simple contact-topology consistency loss over contact adjacency graphs and show on a runnable toy contact task that equal-smoothness trajectories can realize different contact topologies, so a smoothness-only objective cannot identify the desired contact class. The resulting paper is a mechanism-first argument for treating contact structure as a first-class training signal in embodied policy learning.
+\end{abstract}
+
+\section{Introduction}
+
+Contact-rich robot learning is full of local objectives that are easy to optimize but hard to interpret. A policy can be made smoother, safer, or more force-aware without preserving the actual \emph{contact pattern} that makes a manipulation task succeed. For grasping, insertion, in-hand reorientation, rope handling, and assembly, what matters is often not just how the end-effector moves, but which surfaces touch, in what order, and with what adjacency structure.
+
+The field has already learned this lesson in pieces. Guided policy search, force control, contact-safe RL, tactile graph encoders, and topological representations for deformable objects all acknowledge that contact is not just noise \cite{levine2015gps,zhu2022contactsafe,yang2023tacgnn,mitrano2024grasploop}. But these lines of work usually use contact structure as an input, a safety condition, or a planning abstraction. They do not usually regularize the policy to preserve contact topology itself.
+
+This paper asks a narrower question:
+\begin{quote}
+Can we regularize a contact-rich policy so that nearby rollouts preserve the same contact topology, even when action smoothness alone would not?
+\end{quote}
+
+Our answer is yes in mechanism, but with an intentionally modest scope. We define a topology consistency penalty on the contact graph induced by a rollout. The goal is to stabilize the discrete structure of contact evolution, not to force a particular action trajectory. This is a different inductive bias from standard action smoothness, force penalties, or generic graph encoders.
+
+\paragraph{Contributions.}
+\begin{itemize}
+    \item We define a field assumption: local smoothness of a policy is a sufficient proxy for stable contact structure.
+    \item We propose contact topology regularization, a loss that penalizes changes in contact adjacency graphs across neighboring states or latent perturbations.
+    \item We provide a runnable toy demonstration showing equal-smoothness trajectories with different contact topology classes.
+    \item We map the boundary against prior contact-rich control, tactile graph perception, and topology-aware manipulation planning.
+\end{itemize}
+
+\section{Related Work}
+
+Contact-rich manipulation has been studied through imitation and policy search \cite{levine2015gps}, dense reward shaping \cite{beltran2021dense}, force control and safety \cite{zhu2022contactsafe}, tactile representation learning \cite{yang2023tacgnn}, and topological planning for deformable or looped objects \cite{mitrano2024grasploop}.
+
+These papers are close but not identical to the present mechanism. Force-safe policies can still change the order or arrangement of contacts. Tactile graph networks can encode contact structure for perception without making that structure a training constraint on the policy. Topological planning can reason about contact loops but is typically used at the planning layer rather than as a policy regularizer.
+
+That gap is the novelty boundary. If a method only uses contact graphs as features or only limits force magnitude, it is adjacent but not sufficient. Contact topology regularization instead makes the policy pay a direct price when the induced contact graph changes in ways that break the task manifold.
+
+\section{Method}
+
+Let a rollout induce a contact graph sequence
+\[
+\ctop(\tau) = \{G_1, G_2, \dots, G_T\},
+\]
+where each $G_t$ encodes active contact nodes and their adjacency at time $t$. Let $\adj(G_t, G_{t+1})$ be a graph-edit distance or a cheaper surrogate such as edge flip count over the contacts relevant to the task.
+
+We define a contact topology regularizer for policy parameters $\theta$ as
+\[
+\mathcal{L}_{\text{top}}(\theta) = \mathbb{E}_{s,\delta}\big[
+\adj(\ctop(\pol(s)), \ctop(\pol(s+\delta)))
+\big],
+\]
+where $s$ is the state, $\delta$ is a small perturbation, and $\pol$ is the policy. Intuitively, the regularizer asks neighboring rollouts to preserve the same contact adjacency class.
+
+The full learning objective can be written as
+\[
+\mathcal{L}(\theta) = \mathcal{L}_{\text{task}}(\theta) + \lambda_{\text{top}}\mathcal{L}_{\text{top}}(\theta) + \lambda_{\text{act}}\mathcal{L}_{\text{act}}(\theta),
+\]
+where $\mathcal{L}_{\text{act}}$ may be a standard action-smoothness term. The important distinction is that $\mathcal{L}_{\text{act}}$ alone regularizes motion, while $\mathcal{L}_{\text{top}}$ regularizes semantic contact structure.
+
+\section{Why Smoothness Is Not Enough}
+
+Smooth action regularization assumes that task-relevant contact structure changes slowly with action magnitude. That assumption is often false in hybrid manipulation. Two paths can have the same length or curvature while producing different contact mode orderings, different loop closures, or different object-finger adjacency.
+
+The counterexample is simple: moving around an object on the upper side or lower side can require nearly identical path length, but the contact topology is different. In other tasks, a tiny perturbation can flip whether a finger touches the object before or after a support surface. The policy may remain numerically smooth while the contact sequence changes in a task-breaking way.
+
+\section{Runnable Toy Evidence}
+
+We ran a toy 2D contact task in \texttt{scripts/toy\_contact\_topology\_demo.py}. The task defines three coarse path classes: upper arc, lower arc, and switching arc. The toy result is not a robotics benchmark. It is evidence for the mechanism claim that equal smoothness does not imply equal contact topology.
+
+\begin{table}[t]
+\centering
+\begin{tabular}{lcc}
+\toprule
+Path class & Smoothness proxy & Contact topology \\
+\midrule
+Upper arc & 4.8284 & target \\
+Lower arc & 4.8284 & different \\
+Switching arc & 6.0645--7.3006 & different \\
+\bottomrule
+\end{tabular}
+\caption{Toy result from the runnable demo. Upper and lower arcs have the same smoothness proxy, but they encode different contact topology classes.}
+\end{table}
+
+The point is narrow but useful: a smoothness-only objective cannot distinguish trajectories that are equally smooth yet topologically different. A topology regularizer can.
+
+\section{Discussion}
+
+The strongest objection is that contact topology is too discrete or too task-specific to be a useful training signal. We do not dismiss that concern. In fact, the method is only interesting if the topology signal is carefully scoped to the task's relevant contact graph. A bad graph abstraction will over-regularize and break dexterity. A good one will preserve the modes that matter.
+
+The second objection is novelty. The paper is not novel if it is merely a graph neural network, a tactile encoder, or a safety constraint. It becomes novel only if the regularizer changes the central mechanism from ``make actions smooth'' to ``preserve contact structure''.
+
+\section{Limitations}
+
+This manuscript does not provide a full robotics benchmark, nor does it prove that topology regularization is always superior. It provides a field diagnosis, a mechanism, and a runnable toy check. The next step would be a real contact-rich manipulation benchmark with contact graph labels or proxy topology annotations.
+
+\section{Conclusion}
+
+Contact-rich policies fail in ways that smoothness alone does not explain. Contact topology regularization is a candidate mechanism for preserving the discrete structure of contact evolution. The present paper is intentionally small: it establishes the boundary, defines the regularizer, and demonstrates the failure mode on a toy contact task.
+
+\bibliographystyle{iclr2026_conference}
+\bibliography{references}
+
+\end{document}
