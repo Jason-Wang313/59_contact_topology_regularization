@@ -11,5 +11,5 @@
 9. Biggest weaknesses: no real robotics benchmark, no ablation against published baselines, and no proof that the regularizer improves real task success.
 10. Paper-readiness judgment: revise.
 11. Exact Downloads PDF path: `C:/Users/wangz/Downloads/59.pdf`
-12. GitHub URL: pending push
+12. GitHub URL: `https://github.com/Jason-Wang313/59_contact_topology_regularization`
 13. Desktop PDF copy status: pending orchestrator copy
