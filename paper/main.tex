@@ -9,8 +9,9 @@
 \usepackage{amsmath}
 \usepackage{amssymb}
 \usepackage{array}
+\raggedbottom
 
-\title{Contact Topology Regularization for Contact-Rich Policy Learning}
+\title{Contact Topology Regularization}
 
 \author{Anonymous Authors}
 
@@ -21,8 +22,12 @@
 \begin{document}
 \maketitle
 
+\noindent\textbf{Submission-hardening note.}
+This v2 manuscript is marked \textbf{workshop-only}.
+The contribution is a mechanism-level stress test, not a claim that contact-topology regularization is validated on real robots or representative learned-policy benchmarks.
+
 \begin{abstract}
-Contact-rich manipulation is usually stabilized with smoother actions, stronger force limits, better tactile encoders, or safer control laws. We argue that these mechanisms can still leave the central failure mode untouched: a policy may be smooth in continuous action space while silently changing the discrete topology of its contact sequence. We introduce contact topology regularization, a policy objective that preserves the structure of the contact graph induced by a rollout rather than only penalizing action variation. The method is intentionally narrow. It does not claim a universal solver for contact-rich manipulation, and it does not replace control-theoretic safety. Instead, it targets a hidden assumption that appears throughout the literature: if a policy is locally smooth, then its contact behavior is semantically stable. We formalize a simple contact-topology consistency loss over contact adjacency graphs and show on a runnable toy contact task that equal-smoothness trajectories can realize different contact topologies, so a smoothness-only objective cannot identify the desired contact class. The resulting paper is a mechanism-first argument for treating contact structure as a first-class training signal in embodied policy learning.
+Contact-rich manipulation is usually stabilized with smoother actions, stronger force limits, better tactile encoders, or safer control laws. We argue that these mechanisms can still leave the central failure mode untouched: a policy may be smooth in continuous action space while silently changing the discrete topology of its contact sequence. We introduce contact topology regularization, a policy objective that preserves the structure of the contact graph induced by a rollout rather than only penalizing action variation. The method is intentionally narrow. It does not claim a universal solver for contact-rich manipulation, and it does not replace control-theoretic safety. Instead, it targets a hidden assumption that appears throughout the literature: if a policy is locally smooth, then its contact behavior is semantically stable. V2 hardening adds a topology-switch stress: smoothness-only and fixed-topology selectors both reach only 0.333 success with 0.000 switch-task success, while task-conditioned topology reaches 1.000 only once $\lambda_{\rm top}=1.25$ and drops to 0.800 under 20\% topology-label noise. The resulting paper is a workshop-level mechanism argument for treating contact structure as a first-class but task-scoped training signal in embodied policy learning.
 \end{abstract}
 
 \section{Introduction}
@@ -36,13 +41,13 @@ This paper asks a narrower question:
 Can we regularize a contact-rich policy so that nearby rollouts preserve the same contact topology, even when action smoothness alone would not?
 \end{quote}
 
-Our answer is yes in mechanism, but with an intentionally modest scope. We define a topology consistency penalty on the contact graph induced by a rollout. The goal is to stabilize the discrete structure of contact evolution, not to force a particular action trajectory. This is a different inductive bias from standard action smoothness, force penalties, or generic graph encoders.
+Our answer is yes in mechanism, but with an intentionally modest scope. We define a topology consistency penalty on the contact graph induced by a rollout. The goal is to stabilize the discrete structure of contact evolution, not to force a particular action trajectory. This is a different inductive bias from standard action smoothness, force penalties, or generic graph encoders. The v2 stress also makes the main caveat explicit: the topology target must be task-conditioned. A fixed topology penalty can over-regularize and fail tasks that require a legitimate contact-mode switch.
 
 \paragraph{Contributions.}
 \begin{itemize}
     \item We define a field assumption: local smoothness of a policy is a sufficient proxy for stable contact structure.
     \item We propose contact topology regularization, a loss that penalizes changes in contact adjacency graphs across neighboring states or latent perturbations.
-    \item We provide a runnable toy demonstration showing equal-smoothness trajectories with different contact topology classes.
+    \item We provide a runnable toy demonstration showing equal-smoothness trajectories with different contact topology classes and a v2 stress showing when topology regularization over-constrains necessary switches.
     \item We map the boundary against prior contact-rich control, tactile graph perception, and topology-aware manipulation planning.
 \end{itemize}
 
@@ -69,6 +74,7 @@ We define a contact topology regularizer for policy parameters $\theta$ as
 \big],
 \]
 where $s$ is the state, $\delta$ is a small perturbation, and $\pol$ is the policy. Intuitively, the regularizer asks neighboring rollouts to preserve the same contact adjacency class.
+In the hardened version, this should be read as a task-conditioned objective: the topology relation being preserved must be the one that the task declares relevant, not a global preference for one contact graph.
 
 The full learning objective can be written as
 \[
@@ -102,19 +108,34 @@ Switching arc & 6.0645--7.3006 & different \\
 
 The point is narrow but useful: a smoothness-only objective cannot distinguish trajectories that are equally smooth yet topologically different. A topology regularizer can.
 
+\begin{table}[t]
+\centering
+\small
+\input{v2_topology_switch_table.tex}
+\caption{V2 topology-switch stress over three toy task targets: upper, lower, and switching contact topology. Fixed topology regularization fails switching tasks, while task-conditioned topology succeeds only after the topology weight exceeds the extra path length of the switching trajectory and degrades under label noise.}
+\label{tab:v2-switch}
+\end{table}
+
+Table~\ref{tab:v2-switch} is the hostile result that narrows the claim.
+Smoothness-only chooses a short path and succeeds on only one of three topology targets.
+A fixed-upper topology penalty also succeeds on only one of three targets and has 0.000 switch-task success, showing that topology regularization can be actively wrong when it preserves the wrong contact class.
+Task-conditioned topology reaches 0.667 success at $\lambda_{\rm top}=1.00$ because the extra path length of the switching topology is still not worth paying.
+It reaches 1.000 success at $\lambda_{\rm top}=1.25$, but 20\% topology-label noise reduces success to 0.800.
+The supported claim is therefore not ``add topology and win''; it is that topology can be a useful training signal only when the task topology is declared, weighted strongly enough, and observed reliably.
+
 \section{Discussion}
 
-The strongest objection is that contact topology is too discrete or too task-specific to be a useful training signal. We do not dismiss that concern. In fact, the method is only interesting if the topology signal is carefully scoped to the task's relevant contact graph. A bad graph abstraction will over-regularize and break dexterity. A good one will preserve the modes that matter.
+The strongest objection is that contact topology is too discrete or too task-specific to be a useful training signal. We do not dismiss that concern. In fact, the method is only interesting if the topology signal is carefully scoped to the task's relevant contact graph. A bad graph abstraction will over-regularize and break dexterity. A good one will preserve the modes that matter. The v2 stress shows this failure concretely: a fixed topology penalty has the same 0.333 success as smoothness-only in the switch-task suite.
 
 The second objection is novelty. The paper is not novel if it is merely a graph neural network, a tactile encoder, or a safety constraint. It becomes novel only if the regularizer changes the central mechanism from ``make actions smooth'' to ``preserve contact structure''.
 
 \section{Limitations}
 
-This manuscript does not provide a full robotics benchmark, nor does it prove that topology regularization is always superior. It provides a field diagnosis, a mechanism, and a runnable toy check. The next step would be a real contact-rich manipulation benchmark with contact graph labels or proxy topology annotations.
+This manuscript does not provide a full robotics benchmark, nor does it prove that topology regularization is always superior. It provides a field diagnosis, a mechanism, and runnable toy checks. The hardened evidence adds two deployment constraints: the topology target must be task-conditioned, and topology labels or proxies must be reliable. The next step would be a real contact-rich manipulation benchmark with contact graph labels or proxy topology annotations.
 
 \section{Conclusion}
 
-Contact-rich policies fail in ways that smoothness alone does not explain. Contact topology regularization is a candidate mechanism for preserving the discrete structure of contact evolution. The present paper is intentionally small: it establishes the boundary, defines the regularizer, and demonstrates the failure mode on a toy contact task.
+Contact-rich policies fail in ways that smoothness alone does not explain. Contact topology regularization is a candidate mechanism for preserving the discrete structure of contact evolution, but only when scoped to the task's intended contact class. The present paper is intentionally small and workshop-level: it establishes the boundary, defines the regularizer, and demonstrates both the failure mode and the over-regularization risk on toy contact tasks.
 
 \bibliographystyle{iclr2026_conference}
 \bibliography{references}

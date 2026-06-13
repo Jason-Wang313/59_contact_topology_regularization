@@ -1,51 +1,20 @@
 # Novelty Boundary Map
 
-## What is already well covered
+## In scope
 
-- Smooth control for contact tasks
-- Force limiting and collision avoidance
-- Tactile graph encoders for state estimation
-- Hybrid force-position control
-- Contact-aware imitation/RL with reward shaping
-- Deformable-object topology representations
-- Contact mode planning in specific manipulatory domains
+- Toy demonstration that action smoothness does not identify contact topology.
+- Task-conditioned contact topology regularization.
+- Explicit regularization-weight and label-noise sensitivity.
+- Mechanism-level argument for treating contact graph structure as a policy-learning signal.
 
-## What is not yet clearly covered
+## Out of scope
 
-- Policy regularization that explicitly preserves contact topology under small input or latent perturbations
-- A training objective that keeps the contact adjacency graph stable even when continuous outputs change
-- An ablation showing that smoothing actions can destroy the contact mode sequence while topology regularization preserves task success
-- A robotics-specific bridge between graph/topology representation and policy learning, rather than perception or planning only
+- Fixed topology preservation as a universal objective.
+- Real robot or high-fidelity simulation validation.
+- Learned contact graph extraction.
+- Representative contact-rich benchmark performance.
+- Proof that topology regularization is better than force, safety, or tactile graph baselines.
 
-## Hidden assumptions that may be false
+## V2 hostile boundary
 
-1. Smooth actions imply stable contacts.
-2. Force penalties preserve the right manipulation structure.
-3. Contact-rich tasks can be treated as continuous control with occasional collisions.
-4. Tactile graph encoders automatically preserve task-relevant topology.
-5. A policy that is locally smooth is globally safe in contact.
-6. Contact adjacency can be ignored if final success rate is high.
-7. Contact mode transitions are nuisance variables rather than the core state.
-8. The relevant structure is force magnitude rather than who touches whom.
-9. One can regularize policy outputs without regularizing contact structure.
-10. Action-space regularization transfers across objects and geometry.
-11. Existing contact-safe methods also preserve topology.
-12. Topological failure is rare enough to be ignored in benchmarks.
-13. The number of contacts matters less than their arrangement.
-14. Continuous latent smoothness is a proxy for discrete contact consistency.
-15. Policy robustness and contact-topology robustness are equivalent.
-16. Contact graphs need not be tracked through the entire rollout.
-17. The object can be modeled as a point mass with contact costs.
-18. Small action perturbations produce small changes in contact graph.
-19. Safety constraints alone are enough for dexterous contact tasks.
-20. The best representation for contact-rich control is still action-centric.
-
-## Candidate directions that break assumptions
-
-- Regularize the policy so the induced contact graph has bounded edit distance across neighboring states.
-- Penalize changes in contact topology only when they alter the feasible task manifold.
-- Learn a contact graph latent and match the topology of predicted and observed rollout graphs.
-- Compare action-smoothness, force-bounded, and topology-preserving objectives on the same task family.
-
-## Chosen direction
-The strongest direction is a contact-topology consistency regularizer for manipulation policies, with an explicit demonstration that smoothness regularization can leave contact mode order and adjacency unstable.
+The central failure mode is over-regularization. In the v2 switch stress, fixed-upper topology regularization reaches only 0.333 success and 0.000 switch-task success, matching smoothness-only. Task-conditioned topology only succeeds after `lambda_top=1.25`, and 20% label noise lowers success to 0.800.

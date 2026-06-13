@@ -1,25 +1,17 @@
 # Reviewer Attacks
 
-## Attack 1: This is just smoothness regularization in disguise
-Response: the regularizer is defined on contact adjacency graphs, not on action derivatives. The toy evidence shows equal-smoothness paths can still differ in topology.
+## Fatal if unaddressed
 
-## Attack 2: Graph neural networks already model contact structure
-Response: perception encoders are not policy regularizers. A tactile GNN can represent contact features without constraining topology preservation across rollouts.
+- "This is just smoothness regularization in disguise."
+- "A topology penalty can over-regularize dexterity."
+- "The task may require a topology switch."
+- "The method assumes reliable contact graph labels."
+- "The evidence is only a tiny toy task."
 
-## Attack 3: Contact-safe RL already handles the hard part
-Response: safety constraints bound force or collision risk, but they do not guarantee the order, adjacency, or loop structure of contacts needed by the task.
+## V2 response
 
-## Attack 4: Topology is too abstract for robotics control
-Response: the relevant topology is not a generic topological invariant. It is a concrete contact graph abstraction tied to manipulation success.
-
-## Attack 5: The toy experiment is too small
-Response: agreed. It is only a runnable witness for the mechanism. A full paper would need a real contact-rich benchmark with contact graph labels or proxies.
-
-## Attack 6: The method may over-regularize dexterity
-Response: yes. This is the main failure mode. The loss must be scoped to task-relevant contact relations, not every contact edge.
-
-## Attack 7: Existing topological manipulation papers already solve it
-Response: papers like the grasp loop signature solve topology at the planning layer for deformables. That is close, but not the same as regularizing policy learning itself.
-
-## Attack 8: There is no theorem
-Response: correct. The current draft is mechanism-first and evidence-light, so the honest status is workshop/revise unless stronger experiments are added.
+- The equal-smoothness witness separates path length from topology class.
+- The v2 switch stress shows fixed topology regularization fails switching tasks.
+- The manuscript now requires task-conditioned topology targets and declared regularization weights.
+- Label noise is reported directly: 20% noise drops success to 0.800.
+- The decision is workshop-only.
