@@ -1,22 +1,17 @@
 # Child Status 59
 
-Status: completed locally and pushed
-Attempt: 1
-Stage: literature sweep, thesis narrowing, LaTeX build, GitHub push complete
-Last update: 2026-06-12
-Exact commands:
-- `python scripts/build_literature_corpus.py`
-- `python scripts/toy_contact_topology_demo.py`
-- `Get-Command pdflatex -ErrorAction SilentlyContinue | Select-Object Source`
-- `Get-Command bibtex -ErrorAction SilentlyContinue | Select-Object Source`
-- `pdflatex -interaction=nonstopmode -halt-on-error main.tex`
-- `bibtex main`
-- `pdflatex -interaction=nonstopmode -halt-on-error main.tex`
-- `pdflatex -interaction=nonstopmode -halt-on-error main.tex`
-- `Copy-Item -Force .\\paper\\main.pdf 'C:\\Users\\wangz\\Downloads\\59.pdf'`
-- `git add .; git commit -m \"contact topology regularization\"`
-- `gh repo create 59_contact_topology_regularization --public --source . --remote origin --push`
-Failures:
-- Initial LaTeX run had undefined citations until BibTeX and a final pdflatex pass.
-Recovery:
-- Ran BibTeX, reran pdflatex until citations settled, then pushed the repo successfully.
+Status: terminal
+Decision: workshop-only
+Hardening version: v2
+Start state: completed locally and pushed v1
+Canonical PDF: `C:/Users/wangz/Downloads/59.pdf`
+Canonical PDF bytes: 171352
+Canonical PDF built: 2026-06-13 14:17:20 +01:00
+Local paper PDF: removed after canonical rebuild
+
+## V2 changes
+
+- Added `v2_topology_switch_stress.py`.
+- Added a topology-switch stress that measures over-regularization when a fixed topology is preserved across tasks.
+- Added a topology-label noise stress.
+- Reframed the paper as a workshop-level mechanism note, not a validated contact-rich policy-learning result.

@@ -1,0 +1,20 @@
+{
+  "paper": 59,
+  "slug": "contact_topology_regularization",
+  "status": "terminal",
+  "decision": "workshop-only",
+  "hardening_version": "v2",
+  "canonical_pdf": "C:/Users/wangz/Downloads/59.pdf",
+  "canonical_pdf_bytes": 171352,
+  "built_at": "2026-06-13 14:17:20 +01:00",
+  "main_blocker": "Toy-only contact topology mechanism; v2 switch stress shows fixed topology regularization over-constrains necessary topology switches.",
+  "v2_evidence": {
+    "smoothness_success": 0.3333333333333333,
+    "fixed_upper_success": 0.3333333333333333,
+    "task_conditioned_lambda_1_0_success": 0.6666666666666666,
+    "task_conditioned_lambda_1_25_success": 1.0,
+    "task_conditioned_lambda_1_25_noise_0_20_success": 0.8,
+    "switch_success_fixed_upper": 0.0,
+    "switch_success_task_conditioned_lambda_1_25": 1.0
+  }
+}

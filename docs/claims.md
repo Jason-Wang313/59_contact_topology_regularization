@@ -1,24 +1,15 @@
 # Claims
 
-## Core claim
-A topology-preserving regularizer on contact-rich robot policies can improve task stability because it constrains the discrete structure of contacts, not just the magnitude of output changes.
+## Supported
 
-## Supporting claims
+1. Equal-smoothness paths can have different contact topology in the toy witness.
+2. A fixed topology penalty can over-regularize and fail tasks that require a contact-mode switch.
+3. Task-conditioned topology reaches 1.000 success in the toy switch suite only when `lambda_top` reaches 1.25.
+4. Topology-label noise matters: 20% label noise lowers task-conditioned success to 0.800.
 
-- Smooth action regularization is not enough to preserve contact mode order.
-- The important structure in many contact-rich tasks is the contact adjacency graph.
-- Graph- or topology-aware contact representations from perception are not the same as topology-aware policy regularization.
-- A topology regularizer should reduce contact rearrangements that hurt task success.
+## Removed or narrowed
 
-## Claims that need evidence
-
-- The regularizer improves success on representative contact-rich tasks.
-- The regularizer reduces contact graph edit distance.
-- The regularizer retains or improves force safety relative to smoothness baselines.
-- The method remains useful across task types, not only one toy setup.
-
-## Claims that must stay modest
-
-- This is not a universal solution for all manipulation.
-- This does not replace control-theoretic safety.
-- This does not prove topology is the only useful inductive bias.
+1. No claim of real robot validation.
+2. No claim that topology regularization is universally superior to smoothness.
+3. No claim that topology graphs can be extracted reliably from perception.
+4. No claim that the regularizer improves representative contact-rich policy-learning benchmarks.
