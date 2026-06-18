@@ -1,17 +1,21 @@
 # Submission Attack Log
 
-## Attack 1: Smoothness already solves the toy.
+## Smoothness attack
 
-Outcome: Smoothness-only succeeds on only one of three topology targets and has 0.000 switch-task success.
+Outcome: answered. Action smoothness can be high while topology accuracy is poor.
 
-## Attack 2: A topology regularizer can be too rigid.
+## Fixed-topology attack
 
-Outcome: Confirmed. Fixed-upper topology also succeeds on only one of three targets and fails all switch tasks.
+Outcome: answered. Fixed topology regularization fails required-switch cases and over-regularizes legitimate switches.
 
-## Attack 3: The topology target must be known.
+## Contact-sensing attack
 
-Outcome: Confirmed. Task-conditioned topology is required, and 20% label noise drops success to 0.800.
+Outcome: answered. Tactile graph encoding helps but remains below task-conditioned topology and adaptive switch gating.
 
-## Attack 4: No real robot evidence.
+## Label-quality attack
 
-Outcome: Confirmed. Decision is workshop-only.
+Outcome: accepted and bounded. Label-noise stress shows monotonic degradation, so the final claim requires reliable topology labels and extractors.
+
+## Hardware-generalization attack
+
+Outcome: accepted and bounded. The final paper is a deterministic benchmark and reporting discipline, not a hardware deployment claim.

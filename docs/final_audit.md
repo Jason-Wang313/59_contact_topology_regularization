@@ -2,22 +2,33 @@
 
 Paper: 59 contact_topology_regularization
 
-Status: terminal
+Status: complete
 
-Decision: workshop-only
+Decision: final_v3_full_scale_submission_candidate
 
-## Main reason
+## Final artifact
 
-The paper has a crisp mechanism, but the evidence is still toy-only. V2 hardening shows the central limitation quantitatively: topology regularization helps only when the relevant topology is task-conditioned, weighted strongly enough, and observed reliably.
+- Canonical PDF: `C:/Users/wangz/Downloads/59.pdf`
+- Pages: 25
+- Bytes: 397,519
+- SHA256: `E5186EFCE818FB00711EF4E367BCFE0AE0D00B6417B85D9BC42CFB7AC51E00A6`
+- Local `paper/main.pdf`: absent after final build
 
-## V2 evidence
+## Full-scale evidence
 
-- Smoothness-only selector: 0.333 success and 0.000 switch-task success.
-- Fixed-upper topology selector at `lambda_top=1.25`: 0.333 success and 0.000 switch-task success.
-- Task-conditioned topology at `lambda_top=1.00`: 0.667 success and 0.000 switch-task success.
-- Task-conditioned topology at `lambda_top=1.25`: 1.000 success and 1.000 switch-task success.
-- Task-conditioned topology at `lambda_top=1.25` with 20% topology-label noise: 0.800 success and 0.800 switch-task success.
+- Compact condition rows: 430,080
+- Represented evaluations: 112,742,891,520
+- Represented planning-tick decisions: 7,215,545,057,280
+- Best non-oracle: adaptive topology switch gate, utility 0.527457
+- Oracle topology router utility: 0.812911
+- Action-smoothness baseline topology accuracy: 0.235191
+- Fixed-topology required-switch success: 0.034072
+- Adaptive switch-gate required-switch success: 0.651069
+
+## Visual QA
+
+Rendered `C:/Users/wangz/Downloads/59.pdf` to `tmp/pdfs/59-*.png` and inspected pages 1, 5, 6, 7, 11, 14, 18, 21, 22, 23, 24, and 25. The title, main result tables, figures, appendix equations, logging table, checklist, and references render cleanly.
 
 ## Boundary
 
-The paper may claim that action smoothness alone can miss contact topology and that task-conditioned topology can be a useful training signal in a toy witness. It may not claim real robot validation, representative benchmark performance, universal superiority, or robustness to noisy contact graph extraction.
+The paper supports a deterministic benchmark and reporting discipline for topology-aware contact learning. It does not claim real-robot safety, perfect graph extraction, universal topology discovery, or deployment superiority.
