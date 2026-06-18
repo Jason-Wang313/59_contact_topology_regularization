@@ -1,20 +1,21 @@
 # Novelty Boundary Map
 
-## In scope
+## Core contribution
 
-- Toy demonstration that action smoothness does not identify contact topology.
-- Task-conditioned contact topology regularization.
-- Explicit regularization-weight and label-noise sensitivity.
-- Mechanism-level argument for treating contact graph structure as a policy-learning signal.
+Contact topology regularization is framed as a task-conditioned penalty over induced contact graph sequences, with explicit separation from action smoothness, force penalties, and tactile graph representation.
 
-## Out of scope
+## Final benchmark novelty
 
-- Fixed topology preservation as a universal objective.
-- Real robot or high-fidelity simulation validation.
-- Learned contact graph extraction.
-- Representative contact-rich benchmark performance.
-- Proof that topology regularization is better than force, safety, or tactile graph baselines.
+- Full deterministic factor grid over task family, topology class, policy family, topology weight, label noise, severity, observability, and extractor family.
+- RAM-light streamed condition table with 430,080 rows.
+- Required-switch stress that exposes fixed-topology over-regularization.
+- Label-noise and extractor/observability stress that bound the topology claim.
+- Reporting rule requiring topology accuracy, switch success, smoothness, graph edit gap, and label/extractor reliability to be reported separately.
 
-## V2 hostile boundary
+## Boundary
 
-The central failure mode is over-regularization. In the v2 switch stress, fixed-upper topology regularization reaches only 0.333 success and 0.000 switch-task success, matching smoothness-only. Task-conditioned topology only succeeds after `lambda_top=1.25`, and 20% label noise lowers success to 0.800.
+The benchmark supports topology-aware evaluation and task-conditioned regularization claims. It does not establish real-robot safety, learned-policy deployment superiority, perfect graph extraction, or universal topology targets.
+
+## Negative control preserved
+
+The v2 switch stress remains useful: fixed-upper topology regularization reaches 0.333 success and 0.000 switch-task success in the toy setting, while task-conditioned topology only succeeds when the topology target is correct and sufficiently weighted.

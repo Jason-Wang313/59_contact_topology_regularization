@@ -1,17 +1,21 @@
 # Reviewer Attacks
 
-## Fatal if unaddressed
+## Attack: smoothness already captures topology.
 
-- "This is just smoothness regularization in disguise."
-- "A topology penalty can over-regularize dexterity."
-- "The task may require a topology switch."
-- "The method assumes reliable contact graph labels."
-- "The evidence is only a tiny toy task."
+Response: action smoothness reaches 0.774020, but topology accuracy remains 0.235191. The benchmark separates smoothness from topology.
 
-## V2 response
+## Attack: fixed topology regularization is enough.
 
-- The equal-smoothness witness separates path length from topology class.
-- The v2 switch stress shows fixed topology regularization fails switching tasks.
-- The manuscript now requires task-conditioned topology targets and declared regularization weights.
-- Label noise is reported directly: 20% noise drops success to 0.800.
-- The decision is workshop-only.
+Response: fixed topology has 0.034072 required-switch success and over-regularization 0.473186 on the required-switch topology. It is not enough when the task requires a legitimate contact-mode switch.
+
+## Attack: contact sensing, not topology regularization, explains the result.
+
+Response: the tactile graph encoder reaches utility 0.386031, below task-conditioned topology at 0.516209 and adaptive switch gating at 0.527457.
+
+## Attack: labels are perfect.
+
+Response: label-noise stress is included and degrades topology methods. The final claim is conditional on reliable labels and extractors.
+
+## Attack: this proves hardware safety.
+
+Response: no. The paper claims a deterministic full-scale benchmark and reporting discipline, with hardware follow-up left as future work.

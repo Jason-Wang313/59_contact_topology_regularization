@@ -1,0 +1,19 @@
+{
+  "paper": 59,
+  "decision": "final_v3_full_scale_submission_candidate",
+  "canonical_pdf": "C:\\Users\\wangz\\Downloads\\59.pdf",
+  "pages": 25,
+  "file_size_bytes": 397519,
+  "sha256": "E5186EFCE818FB00711EF4E367BCFE0AE0D00B6417B85D9BC42CFB7AC51E00A6",
+  "condition_rows": 430080,
+  "represented_evaluations": 112742891520,
+  "represented_planning_tick_decisions": 7215545057280,
+  "best_non_oracle_policy": "adaptive_switch_gate",
+  "best_non_oracle_utility": 0.5274568499680907,
+  "oracle_utility": 0.8129111573682282,
+  "fixed_switch_success": 0.03407211880116544,
+  "adaptive_switch_success": 0.6510690890047386,
+  "full_scale_ok": true,
+  "local_pdf_removed": true,
+  "built_at": "2026-06-18 22:52:54 +08:00"
+}

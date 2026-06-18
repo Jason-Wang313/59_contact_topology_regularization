@@ -1,7 +1,7 @@
 # Novelty Decision
 
-Decision: workshop-only.
+Decision: final v3 full-scale submission candidate.
 
-The strongest remaining contribution is a mechanism boundary: contact-rich policies should not be regularized only in action space when the task depends on contact graph structure. However, v2 hardening shows that the topology target must be task-conditioned. A fixed topology regularizer is not a general solution and can fail exactly when the task requires a contact-mode switch.
+The contribution is no longer only a toy mechanism boundary. The final manuscript presents a deterministic full-scale benchmark showing that action smoothness and force penalties can leave topology accuracy weak, fixed topology can over-regularize required switches, and task-conditioned/adaptive topology methods improve topology utility under reliable labels.
 
-The paper is suitable as a workshop note or seed for a benchmark, not as a main-conference empirical result.
+The novelty remains bounded by the lack of hardware validation and learned neural policy training. The correct submission framing is benchmark and reporting discipline, not deployed contact-rich manipulation safety.

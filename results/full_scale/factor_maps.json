@@ -1,0 +1,62 @@
+{
+  "task": {
+    "t00": "peg insertion",
+    "t01": "drawer sliding",
+    "t02": "snap-fit assembly",
+    "t03": "cable routing",
+    "t04": "cloth edge folding",
+    "t05": "in-hand regrasp",
+    "t06": "bimanual handover",
+    "t07": "tool-use scraping"
+  },
+  "topology": {
+    "g00": "single point slide",
+    "g01": "dual support",
+    "g02": "pinch grasp",
+    "g03": "rim insertion",
+    "g04": "wrap or loop",
+    "g05": "rolling contact",
+    "g06": "required topology switch"
+  },
+  "policy": {
+    "behavior_cloning": "Behavior cloning baseline",
+    "action_smoothness": "Action smoothness baseline",
+    "force_penalty": "Force penalty baseline",
+    "tactile_graph_encoder": "Tactile graph encoder",
+    "fixed_topology_regularizer": "Fixed topology regularizer",
+    "task_conditioned_topology": "Task-conditioned topology regularizer",
+    "adaptive_switch_gate": "Adaptive topology switch gate",
+    "oracle_topology_router": "Oracle topology router"
+  },
+  "lambda_topology": {
+    "l00": "0.00",
+    "l01": "0.25",
+    "l02": "0.50",
+    "l03": "1.00",
+    "l04": "1.25",
+    "l05": "2.00"
+  },
+  "label_noise": {
+    "n00": "0.00",
+    "n01": "0.05",
+    "n02": "0.10",
+    "n03": "0.20",
+    "n04": "0.40"
+  },
+  "severity": {
+    "v00": "mild",
+    "v01": "moderate",
+    "v02": "severe",
+    "v03": "adversarial"
+  },
+  "observability": {
+    "o00": "proprioception only",
+    "o01": "force torque",
+    "o02": "tactile graph",
+    "o03": "full contact state"
+  },
+  "extractor": {
+    "e00": "framewise threshold extractor",
+    "e01": "temporal graph smoother"
+  }
+}
