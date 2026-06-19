@@ -13,8 +13,9 @@ The v2 toy topology-switch stress is preserved as a negative control, but the pa
 - Canonical PDF: `C:/Users/wangz/Downloads/59.pdf`
 - Pages: 25
 - Bytes: 397,519
-- SHA256: `E5186EFCE818FB00711EF4E367BCFE0AE0D00B6417B85D9BC42CFB7AC51E00A6`
+- SHA256: `7769A377CE7CDCA822A1CA482F18C21EE6962095502ACDBC1FD9CAEE12AEEA31`
 - Local `paper/main.pdf`: removed after final export
+- Visual hardening: VLA-v4-style boxed links, with green citation/URL borders and red internal-reference borders, verified on pages 2, 4, 5, 6, 7, 9, 14, 22, 23, and 25.
 
 ## Full-scale result
 
